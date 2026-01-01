@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Phone, Mail, MapPin } from "lucide-react";
 import heroSolarBg from "@/assets/hero-solar-bg.jpg";
+import emailjs from "@emailjs/browser";
+import { toast } from "@/components/ui/use-toast";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -9,13 +11,39 @@ const Contact = () => {
     phone: "",
     message: "",
   });
+  const [isSending, setIsSending] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission
-    // Debug log removed.
-    alert("Thank you for your message! We will get back to you soon.");
-    setFormData({ fullName: "", email: "", phone: "", message: "" });
+    setIsSending(true);
+
+    const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+    const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+    const templateParams = {
+      from_name: formData.fullName,
+      from_email: formData.email,
+      phone: formData.phone,
+      message: formData.message,
+    };
+
+    try {
+      await emailjs.send(serviceId, templateId, templateParams, publicKey);
+      toast({
+        title: "Message sent ✅",
+        description: "Thanks! We'll get back to you soon.",
+      });
+      setFormData({ fullName: "", email: "", phone: "", message: "" });
+    } catch (error) {
+      console.error("Failed to send message", error);
+      toast({
+        title: "Sending failed ⚠️",
+        description: "Please try again later or contact support.",
+      });
+    } finally {
+      setIsSending(false);
+    }
   };
 
   const handleChange = (
@@ -122,9 +150,10 @@ const Contact = () => {
               </div>
               <button
                 type="submit"
-                className="w-full py-3 bg-primary text-primary-foreground font-medium rounded-lg hover:opacity-90 transition-opacity duration-200"
+                disabled={isSending}
+                className={`w-full py-3 bg-primary text-primary-foreground font-medium rounded-lg hover:opacity-90 transition-opacity duration-200 ${isSending ? 'opacity-70 cursor-not-allowed' : ''}`}
               >
-                Send Message
+                {isSending ? "Sending..." : "Send Message"}
               </button>
             </form>
           </div>
