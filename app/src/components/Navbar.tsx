@@ -4,6 +4,7 @@ import { Moon, Sun, Menu, X } from "lucide-react";
 const Navbar = () => {
   const [isDark, setIsDark] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState<string>('home');
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
@@ -13,7 +14,28 @@ const Navbar = () => {
     }
   }, []);
 
-  const toggleTheme = () => {
+  // Observe sections in the page and update the active nav link
+  useEffect(() => {
+    const ids = ['home', 'services', 'products', 'contact'];
+    const sections = ids.map((id) => document.getElementById(id)).filter(Boolean) as HTMLElement[];
+    if (!sections.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      { root: null, rootMargin: '0px 0px -40% 0px', threshold: 0.3 }
+    );
+
+    sections.forEach((s) => observer.observe(s));
+    return () => observer.disconnect();
+  }, []);
+
+  const toggleTheme = () => { 
     setIsDark(!isDark);
     if (!isDark) {
       document.documentElement.classList.add("dark");
@@ -26,7 +48,6 @@ const Navbar = () => {
 
   const navLinks = [
     { href: "#home", label: "Home" },
-    { href: "#about", label: "About Us" },
     { href: "#services", label: "Services" },
     { href: "#products", label: "Products" },
     { href: "#contact", label: "Contact" },
@@ -42,15 +63,20 @@ const Navbar = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors duration-200"
-              >
-                {link.label}
-              </a>
-            ))}
+            {navLinks.map((link) => {
+              const id = link.href.replace('#', '');
+              const isActive = activeSection === id;
+              return (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  aria-current={isActive ? 'page' : undefined}
+                  className={`text-sm font-medium transition-colors duration-200 ${isActive ? 'text-primary text-glow animate-glow' : 'text-foreground/80 hover:text-primary'}`}
+                >
+                  {link.label}
+                </a>
+              );
+            })}
             <button
               onClick={toggleTheme}
               className="p-2 rounded-full bg-secondary hover:bg-secondary/80 transition-colors duration-200"
@@ -62,7 +88,7 @@ const Navbar = () => {
                 <Moon className="w-5 h-5 text-foreground" />
               )}
             </button>
-          </div>
+          </div> 
 
           {/* Mobile Menu Button */}
           <div className="flex md:hidden items-center gap-2">
@@ -95,16 +121,21 @@ const Navbar = () => {
         {isMenuOpen && (
           <div className="md:hidden border-t border-border bg-background">
             <div className="py-4 px-4 space-y-3">
-              {navLinks.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setIsMenuOpen(false)}
-                  className="block py-2 text-sm font-medium text-foreground/80 hover:text-primary transition-colors duration-200"
-                >
-                  {link.label}
-                </a>
-              ))}
+              {navLinks.map((link) => {
+                const id = link.href.replace('#', '');
+                const isActive = activeSection === id;
+                return (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setIsMenuOpen(false)}
+                    aria-current={isActive ? 'page' : undefined}
+                    className={`block py-2 text-sm font-medium transition-colors duration-200 ${isActive ? 'text-primary text-glow animate-glow' : 'text-foreground/80 hover:text-primary'}`}
+                  >
+                    {link.label}
+                  </a>
+                );
+              })}
             </div>
           </div>
         )}

@@ -58,7 +58,6 @@ const Services = () => {
                   alt={service.title}
                   className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                 />
-                <div className="absolute inset-0 border-4 border-primary/20 rounded-lg m-2" />
               </div>
               <div className="p-6">
                 <h3 className="text-xl font-bold text-foreground mb-3">

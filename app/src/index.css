@@ -118,4 +118,29 @@
     @apply bg-clip-text text-transparent;
     background-image: var(--gradient-primary);
   }
-}
+
+  /* Glow utility for active nav links */
+  .text-glow {
+    text-shadow:
+      0 0 6px hsl(var(--primary) / 0.95),
+      0 0 14px hsl(var(--primary) / 0.7),
+      0 0 24px hsl(var(--primary) / 0.5);
+  }
+
+  @keyframes textGlow {
+    0%, 100% {
+      text-shadow:
+        0 0 4px hsl(var(--primary) / 0.9),
+        0 0 10px hsl(var(--primary) / 0.6);
+    }
+    50% {
+      text-shadow:
+        0 0 10px hsl(var(--primary) / 1),
+        0 0 20px hsl(var(--primary) / 0.7);
+    }
+  }
+
+  .animate-glow {
+    animation: textGlow 1.6s ease-in-out infinite;
+  }
+} 
