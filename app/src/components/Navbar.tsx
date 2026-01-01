@@ -71,7 +71,7 @@ const Navbar = () => {
                   key={link.href}
                   href={link.href}
                   aria-current={isActive ? 'page' : undefined}
-                  className={`text-sm font-medium transition-colors duration-200 ${isActive ? 'text-primary text-glow animate-glow' : 'text-foreground/80 hover:text-primary'}`}
+                  className={`text-sm font-medium transition-colors duration-200 ${isActive ? 'text-[#0DB14B]' : 'text-foreground/80 hover:text-primary'}`}
                 >
                   {link.label}
                 </a>
@@ -130,7 +130,7 @@ const Navbar = () => {
                     href={link.href}
                     onClick={() => setIsMenuOpen(false)}
                     aria-current={isActive ? 'page' : undefined}
-                    className={`block py-2 text-sm font-medium transition-colors duration-200 ${isActive ? 'text-primary text-glow animate-glow' : 'text-foreground/80 hover:text-primary'}`}
+                    className={`block py-2 text-sm font-medium transition-colors duration-200 ${isActive ? 'text-[#0DB14B]' : 'text-foreground/80 hover:text-primary'}`}
                   >
                     {link.label}
                   </a>

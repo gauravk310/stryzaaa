@@ -1,5 +1,5 @@
 import heroSolarBg from "@/assets/hero-solar-bg.jpg";
-import solarStreetLamp from "@/assets/solar-street-lamp.jpg";
+import solarStreetLamp from "@/assets/solar-street-lamp.png";
 import electronicsRepair from "@/assets/electronics-repair.jpg";
 
 const Hero = () => {

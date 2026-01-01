@@ -1,6 +1,6 @@
 import solarManufacturing from "@/assets/solar-manufacturing.jpg";
 import electronicsRepair from "@/assets/electronics-repair.jpg";
-import governmentTendering from "@/assets/government-tendering.jpg";
+import governmentTendering from "@/assets/government-tendering.png";
 
 const services = [
   {
