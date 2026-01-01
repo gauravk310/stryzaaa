@@ -74,7 +74,7 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-sm text-footer-foreground">
-            © 2024 Stryza. All rights reserved.
+            © {new Date().getFullYear()} Stryza. All rights reserved.
           </p>
           <div className="flex gap-6">
             <a
