@@ -1,5 +1,6 @@
 import heroSolarBg from "@/assets/hero-solar-bg.jpg";
 import solarStreetLamp from "@/assets/solar-street-lamp.png";
+import solarStreetLampDark from "@/assets/solar-street-lamp-dark.png";
 import electronicsRepair from "@/assets/electronics-repair.jpg";
 
 const Hero = () => {
@@ -50,10 +51,17 @@ const Hero = () => {
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-4">
                 <div className="animate-slide-in-right" style={{ animationDelay: "0.2s" }}>
+                  {/* Light-mode image */}
                   <img
                     src={solarStreetLamp}
                     alt="Solar street lamp with wind turbines"
-                    className="rounded-xl shadow-card w-full h-48 object-cover"
+                    className="rounded-xl shadow-card w-full h-48 object-cover block dark:hidden"
+                  />
+                  {/* Dark-mode image */}
+                  <img
+                    src={solarStreetLampDark}
+                    alt="Solar street lamp with wind turbines (dark)"
+                    className="rounded-xl shadow-card w-full h-48 object-cover hidden dark:block"
                   />
                 </div>
                 <div className="animate-slide-in-right" style={{ animationDelay: "0.4s" }}>
