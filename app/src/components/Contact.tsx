@@ -73,6 +73,8 @@ const Contact = () => {
         },
         body: JSON.stringify({
           access_key: import.meta.env.VITE_WEB3FORMS_ACCESS_KEY,
+          subject: `New Contact Request from ${formData.fullName}`,
+          from_name: "Stryza Contact Form",
           name: formData.fullName,
           email: formData.email,
           phone: formData.phone,
