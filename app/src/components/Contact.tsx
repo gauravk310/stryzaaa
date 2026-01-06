@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Phone, Mail, MapPin } from "lucide-react";
 import heroSolarBg from "@/assets/hero-solar-bg.jpg";
-import emailjs from "@emailjs/browser";
+
 import { toast } from "@/components/ui/use-toast";
 
 const Contact = () => {
@@ -64,24 +64,33 @@ const Contact = () => {
 
     setIsSending(true);
 
-    const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-    const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
-
-    const templateParams = {
-      from_name: formData.fullName,
-      from_email: formData.email,
-      phone: formData.phone,
-      message: formData.message,
-    };
-
     try {
-      await emailjs.send(serviceId, templateId, templateParams, publicKey);
-      toast({
-        title: "Message sent ✅",
-        description: "Thanks! We'll get back to you soon.",
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          access_key: import.meta.env.VITE_WEB3FORMS_ACCESS_KEY,
+          name: formData.fullName,
+          email: formData.email,
+          phone: formData.phone,
+          message: formData.message,
+        }),
       });
-      setFormData({ fullName: "", email: "", phone: "", message: "" });
+
+      const result = await response.json();
+
+      if (result.success) {
+        toast({
+          title: "Message sent ✅",
+          description: "Thanks! We'll get back to you soon.",
+        });
+        setFormData({ fullName: "", email: "", phone: "", message: "" });
+      } else {
+        throw new Error(result.message || "Something went wrong");
+      }
     } catch (error) {
       console.error("Failed to send message", error);
       toast({
@@ -159,7 +168,7 @@ const Contact = () => {
       icon: MapPin,
       title: "Address",
       value: `SWAPNIL NIWAS 82 HIWARE, RD MARUTIMANDIR
-KURANWADI, Anagar, Solapur, Mohol, Maharashtra, India, 413214`,
+  KURANWADI, Anagar, Solapur, Mohol, Maharashtra, India, 413214`,
     },
   ];
 
