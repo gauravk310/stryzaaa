@@ -11,10 +11,57 @@ const Contact = () => {
     phone: "",
     message: "",
   });
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [isSending, setIsSending] = useState(false);
+
+  const validateForm = () => {
+    const newErrors: { [key: string]: string } = {};
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    // Validate phone: 
+    // If starts with +, expect 12 digits total (approx 2 country + 10 phone). 
+    // If no +, expect exactly 10 digits.
+    const phoneDigits = formData.phone.replace(/\D/g, "");
+    const hasPlus = formData.phone.startsWith("+");
+
+    if (!formData.email) {
+      newErrors.email = "Email is required";
+    } else if (!emailRegex.test(formData.email)) {
+      newErrors.email = "Please enter a valid email address";
+    }
+
+    if (!formData.phone) {
+      newErrors.phone = "Phone number is required";
+    } else {
+      if (hasPlus) {
+        // Basic check: must have enough digits. User asked for "10 numbers long", 
+        // usually implying the subscriber part. We essentially check for reasonable length.
+        // Using 12 as strict length for +XX format (2 code + 10 number).
+        if (phoneDigits.length !== 12) {
+          newErrors.phone = "Phone number must be 12 digits including country code";
+        }
+      } else {
+        if (phoneDigits.length !== 10) {
+          newErrors.phone = "Phone number must be exactly 10 digits";
+        }
+      }
+    }
+
+    if (!formData.message) {
+      newErrors.message = "Message is required";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
+
     setIsSending(true);
 
     const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
@@ -49,24 +96,70 @@ const Contact = () => {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    let formattedValue = value;
+
+    if (name === "phone") {
+      // Remove all non-digit and non-plus chars first to check raw length
+      // Also prevent + in middle
+      let cleaned = value.replace(/[^0-9+]/g, "");
+
+      // Ensure + is only at start
+      if (cleaned.indexOf('+') > 0) {
+        cleaned = cleaned.replace(/\+/g, ""); // strip all + if not at start (simplified)
+        // Re-add if it was supposed to be at start? 
+        // Logic: If user typed + in middle, just remove it. 
+        // If original started with +, keeps it unless cleaned[0] was the removed one.
+        // Better:
+        const hasPlusStart = value.startsWith('+');
+        cleaned = cleaned.replace(/\+/g, '');
+        if (hasPlusStart) cleaned = '+' + cleaned;
+      }
+
+      if (cleaned.startsWith("+")) {
+        // Limit to 13 chars total ( + and 12 digits)
+        if (cleaned.length > 13) {
+          cleaned = cleaned.slice(0, 13);
+        }
+
+        // Apply formatting: +XX XXXXXXXXXX
+        if (cleaned.length > 3) {
+          formattedValue = cleaned.slice(0, 3) + " " + cleaned.slice(3);
+        } else {
+          formattedValue = cleaned;
+        }
+      } else {
+        // Limit to 10 digits
+        if (cleaned.length > 10) {
+          cleaned = cleaned.slice(0, 10);
+        }
+        formattedValue = cleaned;
+      }
+    }
+
+    setFormData({ ...formData, [name]: formattedValue });
+    // Clear error when user types
+    if (errors[name]) {
+      setErrors({ ...errors, [name]: "" });
+    }
   };
 
   const contactInfo = [
     {
       icon: Phone,
       title: "Phone",
-      value: "+91 98765 43210",
+      value: "+91 9637585537",
     },
     {
       icon: Mail,
       title: "Email",
-      value: "info@stryzasolar.com",
+      value: "stryza.in@gmail.com",
     },
     {
       icon: MapPin,
       title: "Address",
-      value: "Solar Park, Industrial Area, Delhi - 110001",
+      value: `SWAPNIL NIWAS 82 HIWARE, RD MARUTIMANDIR
+KURANWADI, Anagar, Solapur, Mohol, Maharashtra, India, 413214`,
     },
   ];
 
@@ -110,8 +203,11 @@ const Contact = () => {
                   onChange={handleChange}
                   placeholder="your@email.com"
                   required
-                  className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors duration-200"
+                  className={`w-full px-4 py-3 rounded-lg border ${errors.email ? "border-red-500" : "border-border"} bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors duration-200`}
                 />
+                {errors.email && (
+                  <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+                )}
               </div>
               <div>
                 <label
@@ -126,9 +222,13 @@ const Contact = () => {
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
-                  placeholder="+91 98765 43210"
-                  className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors duration-200"
+                  placeholder="+91 9637585537"
+                  required
+                  className={`w-full px-4 py-3 rounded-lg border ${errors.phone ? "border-red-500" : "border-border"} bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors duration-200`}
                 />
+                {errors.phone && (
+                  <p className="text-red-500 text-xs mt-1">{errors.phone}</p>
+                )}
               </div>
               <div>
                 <label
@@ -145,8 +245,11 @@ const Contact = () => {
                   placeholder="Tell us about your project"
                   rows={5}
                   required
-                  className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors duration-200 resize-none"
+                  className={`w-full px-4 py-3 rounded-lg border ${errors.message ? "border-red-500" : "border-border"} bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors duration-200 resize-none`}
                 />
+                {errors.message && (
+                  <p className="text-red-500 text-xs mt-1">{errors.message}</p>
+                )}
               </div>
               <button
                 type="submit"
@@ -172,7 +275,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold text-foreground">{info.title}</h3>
-                    <p className="text-muted-foreground">{info.value}</p>
+                    <p className="text-muted-foreground whitespace-pre-line">{info.value}</p>
                   </div>
                 </div>
               ))}
@@ -208,5 +311,4 @@ const Contact = () => {
     </section>
   );
 };
-
 export default Contact;
