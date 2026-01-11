@@ -18,7 +18,7 @@ const Footer = () => {
   return (
     <footer className="bg-footer-bg text-footer-foreground py-8">
       <div className="container-custom">
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           {/* Brand */}
           <div className="space-y-4">
             <h3 className="text-xl font-serif font-bold text-white">Stryza</h3>
