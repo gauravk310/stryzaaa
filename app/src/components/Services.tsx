@@ -4,11 +4,11 @@ import governmentTendering from "@/assets/government-tendering.png";
 
 const services = [
   {
-    title: "Solar Manufacturing Solutions",
+    title: "Electronics Manufacturing Solutions",
     image: solarManufacturing,
     features: [
-      "Solar-powered street lamps",
-      "High-efficiency solar components",
+      "Electronics Manufacturing",
+      "High-efficiency Electronics components",
       "Durable electronic Solution",
     ],
   },
