@@ -1,7 +1,11 @@
 import { useState } from "react";
-import solarManufacturing from "@/assets/solar-manufacturing.jpg";
-import electronicsRepair from "@/assets/electronics-repair.jpg";
-import governmentTendering from "@/assets/government-tendering.png";
+import solarManufacturing from "@/assets/solar-fitting-installation_.jpg";
+import electronicsRepair from "@/assets/ev-e-repair.jpeg";
+import driverRepair from "@/assets/driver-reapir.jpeg";
+import powerSupplyRepair from "@/assets/powr-supply-repair.jpeg";
+import pcbRepair from "@/assets/imp_ppcb_repair.jpeg";
+import medicalERepair from "@/assets/medical-e-reapir.jpeg"
+import testRepairService from "@/assets/testing-repair-service.jpeg"
 import {
   Dialog,
   DialogContent,
@@ -69,7 +73,7 @@ const services: ServiceDetail[] = [
   },
   {
     title: "Drives Repair Services",
-    image: governmentTendering,
+    image: driverRepair,
     tagline: "Expert repair for all types of industrial drives",
     description:
       "We specialise in diagnosing and repairing variable frequency drives (VFDs), servo drives, and DC drives across all major brands and power ratings, minimising downtime for your operations.",
@@ -91,7 +95,7 @@ const services: ServiceDetail[] = [
   },
   {
     title: "Power Supplies Repair Services",
-    image: solarManufacturing,
+    image: powerSupplyRepair,
     tagline: "Reliable repair for SMPS, UPS & industrial power supplies",
     description:
       "We repair all types of switched‑mode power supplies, UPS systems, and industrial DC power supplies, restoring them to factory specifications with thorough testing before return.",
@@ -113,7 +117,7 @@ const services: ServiceDetail[] = [
   },
   {
     title: "Industrial Machines Power & Control Board Repair",
-    image: electronicsRepair,
+    image: pcbRepair,
     tagline: "Restoring CNC, PLC & industrial machine control boards",
     description:
       "We repair power and control boards for CNC machines, PLCs, HMIs, and a wide range of industrial automation equipment, reducing machine downtime and replacement costs significantly.",
@@ -135,7 +139,7 @@ const services: ServiceDetail[] = [
   },
   {
     title: "Medical Electronic Repair Services",
-    image: governmentTendering,
+    image: medicalERepair ,
     tagline: "Precision repair for life‑critical medical equipment",
     description:
       "We provide careful, precise repair services for medical electronic equipment, following strict quality protocols to ensure accuracy, patient safety, and regulatory compliance.",
@@ -157,7 +161,7 @@ const services: ServiceDetail[] = [
   },
   {
     title: "Testing Equipments & Meters Repair Services",
-    image: solarManufacturing,
+    image: testRepairService,
     tagline: "Accurate repair & calibration for all measuring instruments",
     description:
       "We repair and calibrate a wide range of testing and measuring instruments — from multimeters and oscilloscopes to industrial process meters — ensuring accurate, reliable readings.",
