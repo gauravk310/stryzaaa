@@ -1,10 +1,7 @@
 import { useState } from "react";
-import solarStreetLamp from "@/assets/solar-street-lamp.png";
-import solarStreetLampDark from "@/assets/solar-street-lamp-dark.png";
-import solarComponents from "@/assets/solar-components.png";
-import solarComponentsDark from "@/assets/solar-components-dark.png";
-import electronicTorches from "@/assets/electronic-torches.png";
-import electronicTorchesDark from "@/assets/electronic-torches-dark.png";
+import solarStreetLamp from "@/assets/solar-cleaning-robot.jpeg";
+import electricTourch from "@/assets/solar-components.png";
+import grassCuttingMachine from "@/assets/grassCut-machine.jpeg";
 import {
   Dialog,
   DialogContent,
@@ -27,7 +24,7 @@ const products: ProductDetail[] = [
   {
     title: "Solar Plate Cleaning Robot",
     image: solarStreetLamp,
-    darkImage: solarStreetLampDark,
+    darkImage: solarStreetLamp,
     tagline: "Advanced Cleaning Automation for Solar Panels",
     description:
       "Our Solar Plate Cleaning Robot is designed to ensure maximum solar efficiency by keeping panels dust‑free, water‑free, and performing at peak output. Built for both residential and industrial solar plants, it provides a completely automated, safe, and low‑maintenance cleaning solution.",
@@ -75,8 +72,8 @@ const products: ProductDetail[] = [
   },
   {
     title: "Electric Torch",
-    image: electronicTorches,
-    darkImage: electronicTorchesDark,
+    image: electricTourch,
+    darkImage: electricTourch,
     tagline: "High‑Performance Lighting for Home, Travel & Emergency Use",
     description:
       "Our Electric Torch delivers powerful illumination with long battery life, durable construction, and reliable performance in any situation. Designed for everyday users, travelers, security professionals, and industrial needs, it provides bright and efficient lighting whenever required.",
@@ -123,8 +120,8 @@ const products: ProductDetail[] = [
   },
   {
     title: "Electric Grass Cutting Machine",
-    image: solarComponents,
-    darkImage: solarComponentsDark,
+    image: grassCuttingMachine,
+    darkImage: grassCuttingMachine,
     tagline: "Powerful, Efficient & Easy‑to‑Use Lawn Maintenance Solution",
     description:
       "Our Electric Grass Cutting Machine is designed for fast, smooth, and effortless lawn maintenance. With a high‑efficiency motor and durable cutting blades, it delivers perfect trimming for gardens, farms, and commercial landscapes.",
